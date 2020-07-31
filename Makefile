@@ -15,4 +15,4 @@ build:
 	.
 
 run: build
-	@docker run -it $(IMAGE) python hcorado_sp.py
+	@docker run -it $(IMAGE) python hcorado_SP.py

@@ -16,4 +16,4 @@ RUN pip install -r /tmp/requirements.txt
 WORKDIR /app
 
 COPY /data ./data
-COPY hcorado_sp.py .
+COPY hcorado_SP.py .
