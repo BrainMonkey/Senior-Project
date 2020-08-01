@@ -5,6 +5,13 @@ import numpy as np
 
 
 ###############################################################################
+# Set Pandas options
+###############################################################################
+
+pd.set_option("display.max_rows", None, "display.max_columns", None)
+
+
+###############################################################################
 # Constants
 ###############################################################################
 PHYLUM_CO_LIST = [
@@ -113,6 +120,7 @@ GENUS_CO_LIST = [
     "genus_unclassified_Porphyromonadaceae",
     "genus_unclassified_Ruminococcaceae",
 ]
+CORR_COLUMS=["X1","X2","Correlation"]
 CORR_METHOD = "pearson"
 INPUT = "/app/data/gut_16s_abundance.csv"
 ###############################################################################
@@ -133,7 +141,9 @@ def main():
 
     # Correlation test for each data frame
     for df in df_list:
-        print(df.corr(method=CORR_METHOD))
+        df_corr = df.corr(method=CORR_METHOD).stack().reset_index()
+        df_corr.columns = CORR_COLUMS
+        print(df_corr)
 
 
 if __name__ == "__main__":
