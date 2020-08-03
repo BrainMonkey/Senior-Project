@@ -8,7 +8,7 @@ import numpy as np
 # Set Pandas options
 ###############################################################################
 
-pd.set_option("display.max_rows", None, "display.max_columns", None)
+#pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
 ###############################################################################
@@ -139,10 +139,33 @@ def main():
 
     df_list = [phylum_df, class_df, order_df, family_df, genus_df]
 
+    for df in df_list:
+        print(df.shape)
+
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html 
+
+    # Length of the dataframe, since the source is the same for each dataframe the number of rows is the same
+    n = phylum_df.shape[0]
+
+    dist = scipy.stats.beta(n/2 - 1, n/2 - 1, loc=-1, scale=2)
+
+    # Test value to verify
+    # print(scipy.stats.pearsonr(phylum_df['phylum_Actinobacteria'].tolist(),phylum_df['phylum_Bacteroidetes'].tolist()))
+
+
+    print(n)
     # Correlation test for each data frame
     for df in df_list:
         df_corr = df.corr(method=CORR_METHOD).stack().reset_index()
+
+        # Use to name columns in new dataframe
         df_corr.columns = CORR_COLUMS
+
+        # P value formaula from documentation in scipy
+        df_corr['p_value'] = 2*dist.cdf(-abs(df_corr['Correlation']))
+
+        # Adjusted P value
+        
         print(df_corr)
 
 
